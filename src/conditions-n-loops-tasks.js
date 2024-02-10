@@ -415,27 +415,36 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
-  // function quickSort(numbers) {
-  //   if (numbers.length <= 1) return numbers;
-  //   const smaller = [];
-  //   const bigger = [];
-  //   const equal = [];
-  //   const pivot = Math.floor(Math.random() * numbers.length);
-  //   for (let i = 0; i < numbers.length; i += 1) {
-  //     if (i !== pivot) {
-  //       if (numbers[i] < numbers[pivot]) smaller.push(numbers[i]);
-  //       if (numbers[i] > numbers[pivot]) bigger.push(numbers[i]);
-  //       if (numbers[i] === numbers[pivot]) equal.push(numbers[i]);
-  //     } else {
-  //       equal.push(numbers[i]);
-  //     }
-  //   }
-  //   return [...quickSort(smaller), ...equal, ...quickSort(bigger)];
-  // }
+function sortByAsc(arr) {
+  function quickSort(list) {
+    const arrCopy = list;
+    if (arrCopy.length === 0) return [];
 
-  // return quickSort(arr);
+    const smaller = [];
+    const bigger = [];
+
+    const pivot = arrCopy[0];
+
+    for (let i = 1; i < arrCopy.length; i += 1) {
+      if (arrCopy[i] < pivot) smaller.push(arrCopy[i]);
+      else bigger.push(arrCopy[i]);
+    }
+
+    arrCopy.splice(
+      0,
+      arrCopy.length,
+      quickSort(smaller).concat(pivot, quickSort(bigger))
+    );
+    return list.flat(Infinity);
+  }
+
+  const copyArr = JSON.parse(JSON.stringify(arr));
+  const sortArr = quickSort(copyArr);
+  const resArr = arr;
+  for (let i = 0; i < sortArr.length; i += 1) {
+    resArr[i] = sortArr[i];
+  }
+  return arr;
 }
 
 /**
@@ -458,18 +467,14 @@ function sortByAsc(/* arr */) {
 function shuffleChar(str, iterations) {
   let result = str;
   for (let i = 0; i < iterations; i += 1) {
-    const strToChange = result;
-    result = '';
-    for (let j = 0; j < strToChange.length; j += 1) {
-      if (j % 2 === 0) {
-        result += strToChange[j];
-      }
+    let newStr = '';
+    for (let j = 0; j < result.length; j += 2) {
+      newStr += result[j];
     }
-    for (let j = 0; j < strToChange.length; j += 1) {
-      if (j % 2 !== 0) {
-        result += strToChange[j];
-      }
+    for (let j = 1; j < result.length; j += 2) {
+      newStr += result[j];
     }
+    result = newStr;
   }
   return result;
 }
