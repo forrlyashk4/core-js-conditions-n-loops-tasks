@@ -415,29 +415,30 @@ function rotateMatrix(/* matrix */) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(arr) {
-  function quickSort(list) {
-    const arrCopy = list;
-    if (arrCopy.length === 0) return [];
 
-    const smaller = [];
-    const bigger = [];
+function quickSort(list) {
+  const arrCopy = list;
+  if (arrCopy.length === 0) return [];
 
-    const pivot = arrCopy[0];
+  const smaller = [];
+  const bigger = [];
 
-    for (let i = 1; i < arrCopy.length; i += 1) {
-      if (arrCopy[i] < pivot) smaller.push(arrCopy[i]);
-      else bigger.push(arrCopy[i]);
-    }
+  const pivot = arrCopy[0];
 
-    arrCopy.splice(
-      0,
-      arrCopy.length,
-      quickSort(smaller).concat(pivot, quickSort(bigger))
-    );
-    return list.flat(Infinity);
+  for (let i = 1; i < arrCopy.length; i += 1) {
+    if (arrCopy[i] < pivot) smaller.push(arrCopy[i]);
+    else bigger.push(arrCopy[i]);
   }
 
+  arrCopy.splice(
+    0,
+    arrCopy.length,
+    quickSort(smaller).concat(pivot, quickSort(bigger))
+  );
+  return list.flat(Infinity);
+}
+
+function sortByAsc(arr) {
   const copyArr = JSON.parse(JSON.stringify(arr));
   const sortArr = quickSort(copyArr);
   const resArr = arr;
